@@ -5,8 +5,8 @@ import globals;
 import team;
 import util;
 import cutbit;
-import IScreen;
-import Drawable;
+import iscreen;
+import drawable;
 
 class Input
 {
@@ -58,6 +58,8 @@ class Obstacle : Physical
 
 class Actor : Physical
 {
+    this () {}
+
     void calc () {}
     void receive_input (Input input) {}
     
@@ -90,7 +92,8 @@ class GsnScreen : IScreen
 
     this()
     {
-        auto my_ship = new Ship();
+        Cutbit ship_img = new Cutbit("res/ball.bmp");
+        auto my_ship = new Ship(ship_img);
         my_ship.set_pos(XY(0,0));
         ships ~= my_ship;
     }

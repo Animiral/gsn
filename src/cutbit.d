@@ -1,6 +1,8 @@
+import std.exception;
 import std.string;
 import allegro5.allegro;
-
+import globals;
+import std.stdio;
 
 class Cutbit
 {
@@ -11,13 +13,13 @@ class Cutbit
     int xf = 1; // number of columns (frames in x direction) of the spritesheet  
     int yf = 1; // number of rows of the spritesheet
     
-    int get_xl() { return xl; }
-    int get_yl() { return yl; }
-    int get_xf() { return xf; }
-    int get_yf() { return yf; }
+    int get_xl() const { return xl; }
+    int get_yl() const { return yl; }
+    int get_xf() const { return xf; }
+    int get_yf() const { return yf; }
     
-    bool            get_good()      { return bitmap != null; }
-    ALLEGRO_BITMAP* get_al_bitmap() { return bitmap; }
+    bool            get_good() const { return bitmap != null; }
+    ALLEGRO_BITMAP* get_al_bitmap()  { return bitmap; }
     
     
     
@@ -35,7 +37,7 @@ class Cutbit
         bitmap = al_load_bitmap(toStringz(filename));
         enforce (bitmap);
         
-        al_convert_mask_to_alpha(bitmap, the_colors["pink"]);
+        // al_convert_mask_to_alpha(bitmap, the_colors["pink"]);
         cut();
     }
     
@@ -45,7 +47,7 @@ class Cutbit
     {
         xl = yl = 0;
         xf = yf = 1;
-        assert (bitmap);
+        assert (bitmap != null);
         
         const int bxl = xl = al_get_bitmap_width (bitmap);
         const int byl = yl = al_get_bitmap_height(bitmap);
@@ -53,6 +55,8 @@ class Cutbit
                                ALLEGRO_LOCK_READONLY);
 
         if (bxl < 3 || byl < 3) return;
+        
+        writefln("cut bitmap at %s  bxl=%s byl=%s\n", bitmap, bxl, byl);
         
         // Check whether there is a grid in the first few pixels
         // c is the color of the frame in spe
@@ -99,8 +103,10 @@ class Cutbit
             al_draw_bitmap(bitmap, x, y, 0); // 0 = no mirroring
         else
             al_draw_bitmap_region(bitmap,
-            1 + curxf * (curxf + 1),   1 + curyf * (curyf + 1),
-            xl, yl, 0);
+                cast(float) 1 + curxf * (curxf + 1),
+                cast(float) 1 + curyf * (curyf + 1),
+                cast(float) xl, cast(float) yl,
+                x, y, 0);
     }
 
 }
