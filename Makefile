@@ -13,11 +13,9 @@ DFLAGS  :=
 
 LDDIRS  := -L-L/usr/local/lib
 LDALLEG := -L-ldallegro5 -L-lallegro -L-lallegro_primitives
-LDOTHER := -L-lGL
+LDOTHER := -L-lrt
 
-ifneq ($(shell find . -name Makefile-extras), )
-    include Makefile-extras
-endif
+-include Makefile-extras
 
 ###############################################################################
 
