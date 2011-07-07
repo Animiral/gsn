@@ -1,11 +1,16 @@
 import allegro5.allegro;
+import allegro5.allegro_image;
+import allegro5.allegro_primitives;
 import globals;
-import IScreen;
-import GsnScreen;
+import iscreen;
+import gsnscreen;
 
 void setup_allegro()
 {
     al_init();
+    al_init_image_addon();
+    al_init_primitives_addon();
+    
     al_install_keyboard();
     
     // make display

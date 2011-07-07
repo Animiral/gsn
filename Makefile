@@ -9,10 +9,12 @@ BINDIR  := ./bin/
 EXE     := ./bin/gsn
 SRC     := $(shell find $(SRCDIR) -name "*.d")
 
-DFLAGS  :=
+DFLAGS  := -gc
 
 LDDIRS  := -L-L/usr/local/lib
-LDALLEG := -L-ldallegro5 -L-lallegro -L-lallegro_primitives
+LDALLEG := -L-ldallegro5 -L-lallegro \
+           -L-lallegro_primitives \
+           -L-lallegro_image
 LDOTHER := -L-lrt
 
 -include Makefile-extras
@@ -29,7 +31,8 @@ run: all
 $(EXE): $(SRC)
 	@test -d $(OBJDIR) || mkdir $(OBJDIR)
 	@test -d $(BINDIR) || mkdir $(BINDIR)
-	dmd $(DFLAGS) $(SRC) $(LDDIRS) $(LDALLEG) $(LDOTHER) -od$(OBJDIR) -of$(EXE)
+	dmd $(DFLAGS) $(SRC) $(LDDIRS) $(LDALLEG) $(LDOTHER) \
+	    -od$(OBJDIR) -of$(EXE)
 
 clean:
 	rm -f $(shell find $(OBJDIR) -name "*.o")

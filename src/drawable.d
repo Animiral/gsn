@@ -40,6 +40,6 @@ class Animation : Drawable
     
     void draw(XY pos)
     {
-        cutbit.draw_to(pos.x, pos.y, current_frame, current_row);
+        cutbit.draw_to(cast(int)pos.x, cast(int)pos.y, current_frame, current_row);
     }
 }
