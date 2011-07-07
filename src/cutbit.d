@@ -37,7 +37,11 @@ class Cutbit
         bitmap = al_load_bitmap(toStringz(filename));
         enforce (bitmap);
         
-        // al_convert_mask_to_alpha(bitmap, the_colors["pink"]);
+        al_convert_mask_to_alpha(bitmap, the_colors["pink"]);
+        ubyte r, g, b, a;
+        al_unmap_rgba(the_colors["pink"], &r, &g, &b, &a);
+        writefln("components of pink: rgb=(%x, %x, %x) alpha=%x", r, g, b, a);
+
         cut();
     }
     
