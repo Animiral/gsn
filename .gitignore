@@ -1,0 +1,13 @@
+# gsn .gitignore for everybody
+# If you wish to exclude files that only you have, use .git/info/exclude
+# instead of this file, which will affect all users and is versioned.
+
+# exclude all object files due to compiling code
+*.o
+
+# exclude built binaries
+bin/*
+
+# exclude the custom makefile
+Makefile-extras
+
