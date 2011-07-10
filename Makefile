@@ -6,16 +6,21 @@
 OBJDIR  := ./obj/
 SRCDIR  := ./src/
 BINDIR  := ./bin/
+DOBJ    := $(OBJDIR)dall.o
+COBJ    := $(OBJDIR)call.o
 EXE     := ./bin/gsn
-SRC     := $(shell find $(SRCDIR) -name "*.d")
+DSRC     := $(shell find $(SRCDIR) -name "*.d")
+CSRC     := $(shell find $(SRCDIR) -name "*.c")
 
 DFLAGS  := -gc
+CFLAGS  := --std=gnu99 -Wall
 
-LDDIRS  := -L-L/usr/local/lib
-LDALLEG := -L-ldallegro5 -L-lallegro \
-           -L-lallegro_primitives \
-           -L-lallegro_image
-LDOTHER := -L-lrt
+LDDIRS  := -L/usr/local/lib
+LDALLEG := -ldallegro5 -lallegro \
+           -lallegro_primitives \
+           -lallegro_image
+LDDLANG := -lphobos2 -ldallegro5
+LDOTHER := -lrt -g
 
 -include Makefile-extras
 
@@ -28,11 +33,17 @@ all: $(EXE)
 run: all
 	$(EXE)
 
-$(EXE): $(SRC)
-	@test -d $(OBJDIR) || mkdir $(OBJDIR)
+$(EXE): $(DOBJ) $(COBJ)
 	@test -d $(BINDIR) || mkdir $(BINDIR)
-	dmd $(DFLAGS) $(SRC) $(LDDIRS) $(LDALLEG) $(LDOTHER) \
-	    -od$(OBJDIR) -of$(EXE)
+	gcc -o $(EXE) $(DOBJ) $(COBJ) $(LDDIRS) $(LDALLEG) $(LDDLANG) $(LDOTHER)
+
+$(DOBJ): $(DSRC)
+	@test -d $(OBJDIR) || mkdir $(OBJDIR)
+	dmd -c $(DFLAGS) $(DSRC) -od$(OBJDIR) -of$(DOBJ)
+
+$(COBJ): $(CSRC)
+	@test -d $(OBJDIR) || mkdir $(OBJDIR)
+	gcc -c $(CFLAGS) $(CSRC) -o $(COBJ)
 
 clean:
 	rm -f $(shell find $(OBJDIR) -name "*.o")

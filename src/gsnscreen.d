@@ -1,6 +1,7 @@
 import std.algorithm;
 import allegro5.allegro;
 import allegro5.allegro_primitives;
+import xallegro;
 import globals;
 import team;
 import util;
@@ -110,8 +111,8 @@ class GsnScreen : IScreen
     {
         int width = al_get_display_width(the_display);
         int height = al_get_display_height(the_display);
-    
-        al_clear_to_color(ALLEGRO_COLOR.init);
+        
+        dal_clear_to_color(dal_map_rgb(0, 0, 0));
         
         foreach (physical; joiner([cast(Physical[])ships, enemies, bullets, obstacles]))
         {
