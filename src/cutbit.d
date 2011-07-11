@@ -1,8 +1,10 @@
 import std.exception;
 import std.string;
 import allegro5.allegro;
+import xallegro;
 import globals;
-import std.stdio;
+
+debug import std.stdio;
 
 class Cutbit
 {
@@ -37,10 +39,10 @@ class Cutbit
         bitmap = al_load_bitmap(toStringz(filename));
         enforce (bitmap);
         
-        al_convert_mask_to_alpha(bitmap, the_colors["pink"]);
-        ubyte r, g, b, a;
-        al_unmap_rgba(the_colors["pink"], &r, &g, &b, &a);
-        writefln("components of pink: rgb=(%x, %x, %x) alpha=%x", r, g, b, a);
+        ALLEGRO_COLOR col = the_colors["pink"];
+        debug writefln("pink = (%s,%s,%s,%s)", col.r, col.g, col.b, col.a);
+        
+        dal_convert_mask_to_alpha(bitmap, col);
 
         cut();
     }
@@ -60,20 +62,20 @@ class Cutbit
 
         if (bxl < 3 || byl < 3) return;
         
-        writefln("cut bitmap at %s  bxl=%s byl=%s\n", bitmap, bxl, byl);
+        debug writefln("cut bitmap at %s  bxl=%s byl=%s\n", bitmap, bxl, byl);
         
         // Check whether there is a grid in the first few pixels
         // c is the color of the frame in spe
-        ALLEGRO_COLOR c = al_get_pixel(bitmap, 0, 0);
-        if (al_get_pixel(bitmap, 0, 1) == c
-         && al_get_pixel(bitmap, 1, 0) == c
-         && al_get_pixel(bitmap, 1, 1) != c)
+        ALLEGRO_COLOR c = dal_get_pixel(bitmap, 0, 0);
+        if (dal_get_pixel(bitmap, 0, 1) == c
+         && dal_get_pixel(bitmap, 1, 0) == c
+         && dal_get_pixel(bitmap, 1, 1) != c)
         {
             // Determine the size of a single frame box.
             for (xl = 1; xl + 1 < bxl; ++xl)
-                if (al_get_pixel(bitmap, xl+1, 1) == c) break;
+                if (dal_get_pixel(bitmap, xl+1, 1) == c) break;
             for (yl = 1; xl + 1 < bxl; ++yl)
-                if (al_get_pixel(bitmap, 1, yl+1) == c) break;
+                if (dal_get_pixel(bitmap, 1, yl+1) == c) break;
 
             // If only one frame fits into the bitmap... 
             if (xl*2 > bxl && yl*2 > byl) {

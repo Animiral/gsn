@@ -12,15 +12,15 @@ EXE     := ./bin/gsn
 DSRC     := $(shell find $(SRCDIR) -name "*.d")
 CSRC     := $(shell find $(SRCDIR) -name "*.c")
 
-DFLAGS  := -gc
+DFLAGS  := -gc -debug
 CFLAGS  := --std=gnu99 -Wall
 
 LDDIRS  := -L/usr/local/lib
 LDALLEG := -ldallegro5 -lallegro \
            -lallegro_primitives \
            -lallegro_image
-LDDLANG := -lphobos2 -ldallegro5
-LDOTHER := -lrt -g
+LDDLANG := -lrt -lphobos2 -ldallegro5
+LDOTHER := -g
 
 -include Makefile-extras
 
