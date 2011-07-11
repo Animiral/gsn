@@ -27,11 +27,15 @@ void setup_allegro()
     globals.initialize_colors();
 }
 
+
+
 void cleanup_allegro()
 {
     al_destroy_display(the_display);
     al_destroy_timer(the_calc_timer);
 }
+
+
 
 void main(string args[])
 {
@@ -51,7 +55,7 @@ void main(string args[])
             the_game_time++;
         }
         al_set_target_bitmap(al_get_backbuffer(the_display));
-        screen.draw(1);
+        screen.draw(0);
         al_flip_display();
     }
     

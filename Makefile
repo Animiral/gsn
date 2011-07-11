@@ -13,7 +13,7 @@ DSRC     := $(shell find $(SRCDIR) -name "*.d")
 CSRC     := $(shell find $(SRCDIR) -name "*.c")
 
 DFLAGS  := -gc -debug
-CFLAGS  := --std=gnu99 -Wall
+CFLAGS  := --std=gnu99 -Wall -g
 
 LDDIRS  := -L/usr/local/lib
 LDALLEG := -ldallegro5 -lallegro \
