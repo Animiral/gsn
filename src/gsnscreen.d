@@ -5,70 +5,48 @@ import allegro5.allegro_primitives;
 import xallegro;
 import globals;
 import team;
-import util;
+import xy;
 import cutbit;
 import iscreen;
 import drawable;
-
-struct Input
-{
-    bool left;
-    bool right;
-    bool thrust;
-    bool shoot;
-}
-
+import actor;
+import physical;
+import map;
 
 class GsnScreen : IScreen
 {
-    Ship[]     ships;
-    Enemy[]    enemies;
-    Bullet[]   bullets;
-    Obstacle[] obstacles;
-    Team[]     teams;
+    Map    map;
+    Team[] teams;
+    Ship   my_ship;
 
     double gravity = STANDARD_GRAVITY;
 
     this()
     {
         // Cutbit ship_img = new Cutbit("res/ball.bmp");
-        auto my_ship = new Ship(); // new Ship(ship_img);
+        my_ship = new Ship(); // new Ship(ship_img);
         int display_w = al_get_display_width(the_display);
         int display_h = al_get_display_height(the_display);
-        my_ship.set_pos(XY(display_w/2,display_h/2), XY(0,0), XY(0, gravity));
-        ships ~= my_ship;
+        my_ship.set_pos(XYd(display_w/2,display_h/2),
+                        XYd(0,0), XYd(0, gravity));
+        map.physicals ~= my_ship;
     }
 
-    void calc()
+    void update()
     {
         Input input;
         ALLEGRO_KEYBOARD_STATE key_state;
         al_get_keyboard_state(&key_state);
         input.left = al_key_down(&key_state, ALLEGRO_KEY_LEFT);
         input.right = al_key_down(&key_state, ALLEGRO_KEY_RIGHT);
-    
-        if (ships.length > 0)
-        {
-            ships[0].receive_input(input);
-        }
+        my_ship.receive_input(input);
         
-        foreach (physical; joiner([cast(Physical[])ships, enemies, bullets, obstacles]))
-        {
-            physical.calc();
-        }
+        map.update();
     }
 
     void draw(double dt)
     {
-        int width = al_get_display_width(the_display);
-        int height = al_get_display_height(the_display);
-        
-        dal_clear_to_color(dal_map_rgb(0, 0, 0));
-        
-        foreach (physical; joiner([cast(Physical[])ships, enemies, bullets, obstacles]))
-        {
-            physical.draw(dt);
-        }
+        map.draw(dt);
     }
 
     bool is_finished()

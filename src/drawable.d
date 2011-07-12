@@ -2,13 +2,13 @@ import std.math;
 import xallegro;
 import cutbit;
 import globals;
-import util;
+import xy;
 
 debug import std.stdio;
 
 interface Drawable
 {
-    void draw(XY pos);
+    void draw(XYd pos);
 }
 
 class Animation : Drawable
@@ -43,7 +43,7 @@ class Animation : Drawable
         this.loop = loop;
     }
     
-    void draw(XY pos)
+    void draw(XYd pos)
     {
         cutbit.draw_to(cast(int)pos.x, cast(int)pos.y,
                        current_frame, current_row);
@@ -59,18 +59,16 @@ class PrimitiveShipDrawable : Drawable
         orientation = ori;
     }
 
-    void draw(XY pos)
+    void draw(XYd pos)
     {
-        double sin_ori = sin(orientation);
-        double cos_ori = cos(orientation);
-    
-        double x1 = pos.x - 10 * cos_ori +  5 * sin_ori;
-        double y1 = pos.y +  5 * cos_ori + 10 * sin_ori;
-        double x2 = pos.x + 10 * cos_ori +  5 * sin_ori;
-        double y2 = pos.y +  5 * cos_ori - 10 * sin_ori;
-        double x3 = pos.x -  0 * cos_ori - 20 * sin_ori;
-        double y3 = pos.y - 20 * cos_ori -  0 * sin_ori;
+        auto p1x = XYd(-10, 5);
+        auto p2x = XYd( 10, 5);
+        auto p3x = XYd(0, -20);
+        auto p1 = p1x.rotate(orientation) + pos;
+        auto p2 = p2x.rotate(orientation) + pos;
+        auto p3 = p3x.rotate(orientation) + pos;
         
-        dal_draw_filled_triangle(x1, y1, x2, y2, x3, y3, the_colors["white"]);
+        dal_draw_filled_triangle(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y,
+                                 the_colors["white"]);
     }
 }

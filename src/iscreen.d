@@ -1,9 +1,6 @@
 interface IScreen
 {
-    void calc();
+    void update();
     void draw(double dt);
     bool is_finished();
-
-
-
 }

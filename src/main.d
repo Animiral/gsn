@@ -48,10 +48,10 @@ void main(string args[])
     
     // main loop
     while (!screen.is_finished()) {
-        long calc_ticks = al_get_timer_count(the_calc_timer);
-        foreach (i; 0..min(calc_ticks-the_game_time, FRAMESKIP_MAX+1))
+        long update_ticks = al_get_timer_count(the_calc_timer);
+        foreach (i; 0..min(update_ticks-the_game_time, FRAMESKIP_MAX+1))
         {
-            screen.calc();
+            screen.update();
             the_game_time++;
         }
         al_set_target_bitmap(al_get_backbuffer(the_display));

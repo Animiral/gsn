@@ -9,29 +9,28 @@
  */
 module physical;
 
-import util;
+import xy;
+import drawable;
 
 abstract class Physical
 {
-    XY pos;
-    XY speed;
-    XY accel;
+    XYd pos;
+    XYd speed;
+    XYd accel;
     
     Drawable[] drawables; // primary drawables drawn at x/y
     
-    void set_pos (XY pos, XY speed = XY(0,0), XY accel = XY(0,0))
+    void set_pos (XYd pos, XYd speed = XYd(0,0), XYd accel = XYd(0,0))
     {
         this.pos = pos;
         this.speed = speed;
         this.accel = accel;
     }
     
-    void calc()
+    void update()
     {
-        pos.x += speed.x;
-        pos.y += speed.y;
-        speed.x += accel.x;
-        speed.y += accel.y;
+        pos   += speed;
+        speed -= accel;
     }
     
     void draw(double dt)
@@ -41,7 +40,7 @@ abstract class Physical
         
         foreach (d; drawables)
         {
-            d.draw(XY(draw_x, draw_y));
+            d.draw(XYd(draw_x, draw_y));
         }
     }
 }
