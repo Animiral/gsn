@@ -3,8 +3,17 @@
  * Examples for actors are ships and enemies.
  */
 module actor;
- 
+
+import drawable;
 import physical;
+
+struct Input
+{
+    bool left;
+    bool right;
+    bool thrust;
+    bool shoot;
+}
 
 class Actor : Physical
 {
@@ -12,9 +21,9 @@ class Actor : Physical
 
     this() {}
 
-    void calc ()
+    void update ()
     {
-        super.calc();
+        super.update();
     }
     
     void receive_input (Input input) {}

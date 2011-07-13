@@ -1,6 +1,6 @@
 import std.math;
 import allegro5.allegro;
-import util;
+import xy;
 import xallegro;
 
 enum CALC_FPS = 60;
