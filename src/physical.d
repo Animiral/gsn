@@ -14,13 +14,23 @@ import drawable;
 
 abstract class Physical
 {
-    XYd pos;
+
+protected
+{
+    XYd pos;   // central
     XYd speed;
     XYd accel;
-    
+    WH size;   // bounding box reaches from [pos-size/2 .. pos+size/2]
+   
     Drawable[] drawables; // primary drawables drawn at x/y
-    
-    void set_pos (XYd pos, XYd speed = XYd(0,0), XYd accel = XYd(0,0))
+}
+
+    XYd get_pos()   { return pos; }
+    XYd get_speed() { return speed; }
+    XYd get_accel() { return accel; }
+    WH  get_size()  { return size; }
+
+    void set_xys (XYd pos, XYd speed = XYd(0,0), XYd accel = XYd(0,0))
     {
         this.pos = pos;
         this.speed = speed;

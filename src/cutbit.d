@@ -8,12 +8,16 @@ debug import std.stdio;
 
 class Cutbit
 {
+
+private
+{
     ALLEGRO_BITMAP* bitmap = null; 
 
     int xl = 0; // x-width  of a single frame
     int yl = 0; // y-length of a single frame
     int xf = 1; // number of columns (frames in x direction) of the spritesheet  
     int yf = 1; // number of rows of the spritesheet
+}
     
     int get_xl() const { return xl; }
     int get_yl() const { return yl; }

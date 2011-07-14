@@ -17,6 +17,13 @@ struct XY(T)
         return this;
     }
 
+    U opCast(U) ()
+    {
+        U u;
+        u = this;
+        return u;
+    }
+
     ref XY opOpAssign(string s, U)(XY!U rhs)
         if (isAssignable!(T, U) && (s == "+" || s == "-"))
     {

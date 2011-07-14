@@ -1,23 +1,52 @@
 import std.math;
 import xallegro;
+
 import cutbit;
+import camera;
 import globals;
 import xy;
 
 debug import std.stdio;
 
-interface Drawable
+abstract class Drawable
 {
-    void draw(XYd pos);
+
+static
+{
+    private Camera[] cameras;
+    
+    void add_camera   (Camera c) { cameras ~= c;   }
+    void clear_cameras()         { cameras = null; }
+    const (Camera)[] get_cameras() { return cameras; }
 }
 
+    abstract protected void draw_onto_camera(Camera camera, XYd pos);
+    
+    final void draw(XYd pos) // is called by gsn_screen
+    {
+        foreach (cam; cameras) draw_onto_camera(cam, pos);
+    }
+}
+
+
+
 class Animation : Drawable
+{
+
+private
 {
     Cutbit cutbit;
     bool   loop          = true;
     int    current_row   = 0;
     int    current_frame = 0;
+}
 
+    bool get_loop()         { return loop; }
+    int get_current_row()   { return current_row; }
+    int get_current_frame() { return current_frame; }
+
+    void set_loop(bool loop) { this.loop = loop; }
+    
     this(Cutbit cutbit)
     {
         this.cutbit = cutbit;
@@ -43,13 +72,14 @@ class Animation : Drawable
         this.loop = loop;
     }
     
-    void draw(XYd pos)
+    void draw_onto_camera(Camera camera, XYd pos)
     {
         cutbit.draw_to(cast(int)pos.x, cast(int)pos.y,
                        current_frame, current_row);
     }
 }
 
+/* temporary measure */
 class PrimitiveShipDrawable : Drawable
 {
     double orientation = 0;
@@ -59,7 +89,7 @@ class PrimitiveShipDrawable : Drawable
         orientation = ori;
     }
 
-    void draw(XYd pos)
+    void draw_onto_camera(Camera camera, XYd pos)
     {
         auto p1x = XYd(-10, 5);
         auto p2x = XYd( 10, 5);

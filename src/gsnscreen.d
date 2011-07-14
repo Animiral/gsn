@@ -4,6 +4,7 @@ import allegro5.allegro;
 import allegro5.allegro_primitives;
 import xallegro;
 import globals;
+import camera;
 import team;
 import xy;
 import cutbit;
@@ -23,13 +24,24 @@ class GsnScreen : IScreen
 
     this()
     {
-        // Cutbit ship_img = new Cutbit("res/ball.bmp");
-        my_ship = new Ship(); // new Ship(ship_img);
         int display_w = al_get_display_width(the_display);
         int display_h = al_get_display_height(the_display);
-        my_ship.set_pos(XYd(display_w/2,display_h/2),
+        auto display_size = XYd(display_w, display_h);
+        
+        // debug temporary: map has a fixed size of 2* srceen size
+        map = new Map(cast(XYi) display_size);
+    
+        auto camera = new Camera(map, display_size, display_size.scale(.5),
+                                 display_size);
+        Drawable.clear_cameras();
+        Drawable.add_camera(camera);
+    
+        // Cutbit ship_img = new Cutbit("res/ball.bmp");
+        my_ship = new Ship(); // new Ship(ship_img);
+        my_ship.set_xys(XYd(display_w/2,display_h/2),
                         XYd(0,0), XYd(0, gravity));
         map.physicals ~= my_ship;
+        camera.set_followee(my_ship);
     }
 
     void update()
