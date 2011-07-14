@@ -3,6 +3,7 @@ module map;
 import cutbit;
 import physical;
 import xallegro;
+import xy;
 
 struct Map
 {

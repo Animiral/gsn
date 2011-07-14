@@ -33,7 +33,7 @@ const
     }
 
     auto opBinary(string s, U) (XY!U rhs)
-        if ((s == "-" || s == "+") && is(typeof(x + rhs.x)))
+        if ((s == "-" || s == "+") && is(typeof(T.init + U.init)))
     {
         return XY!(CommonType!(T,U)) (x + rhs.x, y + rhs.y);
     }
